@@ -43,6 +43,14 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
+        $data = $request->all();
+        $tag = new Tag();
+        $isSaved = $tag->create($data);
+        if (!$isSaved) {
+            return "Erro ao salvar no banco de dados";
+            //só pra testar, depois eu adiciono um toast notification
+        }
+        return redirect()->route('tags.index');
     }
 
     /**
@@ -64,7 +72,8 @@ class TagController extends Controller
      */
     public function edit($id)
     {
-        //
+        $tag = Tag::findOrFail($id);
+        return view('tag.edit', compact('tag'));
     }
 
     /**
@@ -76,7 +85,13 @@ class TagController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $tag = Tag::findOrFail($id);
+        $data = $request->all();
+        $isUpdated = $tag->update($data);
+        if (!$isUpdated) {
+            return "Erro ao atualizar tag no banco de dados";
+        }
+        return redirect()->route('tags.index');
     }
 
     /**
@@ -87,6 +102,10 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $tag = Tag::findOrFail($id);
+        $tag->delete();
+
+        // Depois adicionar a mensagem de sucesso ou erro
+        return redirect()->route('tags.index');
     }
 }
