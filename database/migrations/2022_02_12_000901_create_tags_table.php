@@ -14,7 +14,8 @@ class CreateTagsTable extends Migration
     public function up()
     {
         Schema::create('tag', function (Blueprint $table) {
-            $table->id();
+            $table->collation = 'utf8mb4_general_ci';
+            $table->integer('id')->autoIncrement();
             $table->string('name', 50);
             $table->unique('name', 'name_UNIQUE');
         });
