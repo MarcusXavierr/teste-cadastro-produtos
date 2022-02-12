@@ -11,6 +11,7 @@ class Tag extends Model
 
     protected $fillable = ['name'];
     protected $table = 'tag';
+    public $timestamps = false;
     public function products()
     {
         return $this->belongsToMany(Product::class);
