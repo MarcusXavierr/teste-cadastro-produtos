@@ -50,7 +50,7 @@ class TagController extends Controller
         try {
             $tag->create($data);
         } catch (Exception $e) {
-            $this->returnErrorMessage($e);
+            $this->returnErrorMessage($e, "salvar");
             return redirect()->route('tags.create');
         }
         notify()->success("Tag criada com sucesso", "Tudo ok");
@@ -91,9 +91,10 @@ class TagController extends Controller
     {
         $tag = Tag::findOrFail($id);
         $data = $request->all();
-        $isUpdated = $tag->update($data);
-        if (!$isUpdated) {
-            notify()->error("Por favor, tente mais tarde novamente", "Erro ao atualizar tag no banco de dados");
+        try {
+            $tag->update($data);
+        } catch (Exception $e) {
+            $this->returnErrorMessage($e, "atualizar");
             return redirect()->route('tags.edit', ['tag' => $id]);
         }
         notify()->success("Tag atualizada com sucesso!", "Deu tudo certo");
@@ -127,10 +128,11 @@ class TagController extends Controller
         return redirect()->route('tags.index');
     }
 
-    private function returnErrorMessage(Exception $e)
+    private function returnErrorMessage(Exception $e, String $actionType)
     {
-        $title = "Erro ao salvar no banco de dados";
-        if ($e->getCode() === 23000) {
+        $errorCode = $e->getCode();
+        $title = "Erro ao $actionType no banco de dados";
+        if ($errorCode == 23000) {
             notify()->error("Já existe uma tag com o nome que você tentou usar!", $title);
         } else {
             notify()->error("Por favor, tente mais tarde novamente", $title);

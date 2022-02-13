@@ -57,7 +57,7 @@ class ProductController extends Controller
             $productInstance = $product->create($data);
             $productInstance->tags()->sync($tags);
         } catch (Exception $e) {
-            $this->returnErrorMessage($e);
+            $this->returnErrorMessage($e, 'salvar');
             return redirect()->route('produtos.create');
         }
         notify()->success("Produto adicionado com sucesso!", "Deu tudo certo");
@@ -100,10 +100,11 @@ class ProductController extends Controller
         $data = $request->all();
         $tags = $request->get('tags');
         $product = Product::findOrFail($id);
-        $isUpdated = $product->update($data);
-        $product->tags()->sync($tags);
-        if (!$isUpdated) {
-            notify()->error("Por favor tente novamente mais tarde", "Erro ao atualizar");
+        try {
+            $product->update($data);
+            $product->tags()->sync($tags);
+        } catch (Exception $e) {
+            $this->returnErrorMessage($e, 'atualizar');
             return redirect()->route("produtos.edit", ['produto' => $id]);
         }
         notify()->success("Produto atualizado com sucesso", "Deu tudo certo");
@@ -136,10 +137,10 @@ class ProductController extends Controller
         return redirect()->route('produtos.index');
     }
 
-    private function returnErrorMessage(Exception $e)
+    private function returnErrorMessage(Exception $e, $actionType)
     {
-        $title = "Erro ao salvar no banco de dados";
-        if ($e->getCode() === 23000) {
+        $title = "Erro ao $actionType no banco de dados";
+        if ($e->getCode() == 23000) {
             notify()->error("Já existe um produto com o nome que você tentou usar!", $title);
         } else {
             notify()->error("Erro desconhecido no banco de dados, por favor tente novamente mais tarde", $title);
