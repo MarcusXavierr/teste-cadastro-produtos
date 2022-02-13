@@ -17,14 +17,14 @@
                     <tr>
                         <td>{{$product->name}}</td>
                         <td> 
-                            <button type="button" class="btn btn-info " data-bs-toggle="modal" data-bs-target="#tagModal">
+                            <button type="button" class="btn btn-info " data-bs-toggle="modal" data-bs-target="#tag-{{$product->id}}">
                                 Ver as tags deste produto
                             </button>
-                            <div class="modal fade" id="tagModal" tabindex="-1" aria-labelledby="tagModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="tag-{{$product->id}}" tabindex="-1" aria-labelledby="tag-{{$product->id}}Label" aria-hidden="true">
                                 <div class="modal-dialog">
                                   <div class="modal-content">
                                     <div class="modal-header">
-                                      <h5 class="modal-title" id="tagModalLabel">Tags deste produto</h5>
+                                      <h5 class="modal-title" id="tag-{{$product->id}}Label">Tags deste produto</h5>
                                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                                     </div>
                                     <div class="modal-body">
