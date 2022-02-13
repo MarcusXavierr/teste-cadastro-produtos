@@ -9,6 +9,11 @@
             <div>
                 <label for="productName" class="form-label">Nome do produto</label>
                 <input type="text" name="name" class="form-control">
+                @if ($errors->has('name'))
+                    <span class="help-block text-sm text-danger ">
+                        {{ $errors->first('name') }}
+                    </span>
+                @endif
             </div>
             <div class="mt-3">
                 <p class="mb-1">Escolha as tags do produto</p>

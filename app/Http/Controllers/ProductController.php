@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductFormRequest;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Tag;
@@ -46,7 +47,7 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductFormRequest $request)
     {
 
         $data = $request->all();
@@ -94,7 +95,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProductFormRequest $request, $id)
     {
         $data = $request->all();
         $tags = $request->get('tags');
@@ -138,7 +139,7 @@ class ProductController extends Controller
     private function returnErrorMessage(Exception $e)
     {
         $title = "Erro ao salvar no banco de dados";
-        if ($e->getCode() == 23000) {
+        if ($e->getCode() === 23000) {
             notify()->error("Já existe um produto com o nome que você tentou usar!", $title);
         } else {
             notify()->error("Erro desconhecido no banco de dados, por favor tente novamente mais tarde", $title);

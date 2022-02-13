@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Http\Requests\TagFormRequest;
 use Illuminate\Http\Request;
 use App\Models\Tag;
 use Exception;
@@ -43,7 +43,7 @@ class TagController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TagFormRequest $request)
     {
         $data = $request->all();
         $tag = new Tag();
@@ -87,7 +87,7 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TagFormRequest $request, $id)
     {
         $tag = Tag::findOrFail($id);
         $data = $request->all();
@@ -130,7 +130,7 @@ class TagController extends Controller
     private function returnErrorMessage(Exception $e)
     {
         $title = "Erro ao salvar no banco de dados";
-        if ($e->getCode() == 23000) {
+        if ($e->getCode() === 23000) {
             notify()->error("Já existe uma tag com o nome que você tentou usar!", $title);
         } else {
             notify()->error("Por favor, tente mais tarde novamente", $title);
