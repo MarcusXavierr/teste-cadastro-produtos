@@ -56,14 +56,15 @@ class ProductController extends Controller
             $productInstance = $product->create($data);
             $productInstance->tags()->sync($tags);
         } catch (Exception $e) {
+            $title = "Erro ao adicionar produto no banco de dados";
             if ($e->getCode() == 23000) {
-                return "Você não pode ter nomes duplicados";
+                notify()->error("Você não pode ter nomes duplicados", $title);
+            } else {
+                notify()->error("Erro desconhecido no banco de dados, por favor tente novamente mais tarde", $title);
             }
-            return "Erro ao salvar no banco de dados";
-            //logo vou dar um jeito de fazer ele voltar pra tela com essa mensagem
-            //de erro
+            return redirect()->route('produtos.create');
         }
-
+        notify()->success("Produto adicionado com sucesso!", "Deu tudo certo");
         return redirect()->route('produtos.index');
     }
 
@@ -106,8 +107,10 @@ class ProductController extends Controller
         $isUpdated = $product->update($data);
         $product->tags()->sync($tags);
         if (!$isUpdated) {
-            return "Erro ao atualizar";
+            notify()->error("Por favor tente novamente mais tarde", "Erro ao atualizar");
+            return redirect()->route("produtos.edit", ['produto' => $id]);
         }
+        notify()->success("Produto atualizado com sucesso", "Deu tudo certo");
         return redirect()->route('produtos.index');
     }
 
@@ -127,7 +130,12 @@ class ProductController extends Controller
         */
         DB::table('product_tag')->where('product_id', $product->id)->delete();
 
-        $product->delete();
+        $isDeleted = $product->delete();
+        if ($isDeleted) {
+            notify()->success("Produto deletado com sucesso", "Tudo ok");
+        } else {
+            notify()->error("Tente novamente mais tarde", "Erro ao deletar produto");
+        }
         // Depois adicionar a mensagem de sucesso ou erro
         return redirect()->route('produtos.index');
     }

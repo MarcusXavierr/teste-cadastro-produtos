@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tag;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class TagController extends Controller
@@ -46,11 +47,13 @@ class TagController extends Controller
     {
         $data = $request->all();
         $tag = new Tag();
-        $isSaved = $tag->create($data);
-        if (!$isSaved) {
-            return "Erro ao salvar no banco de dados";
-            //só pra testar, depois eu adiciono um toast notification
+        try {
+            $tag->create($data);
+        } catch (Exception $e) {
+            $this->callRightFunction($e);
+            return redirect()->route('tags.create');
         }
+        notify()->success("Tag criada com sucesso", "Tudo ok");
         return redirect()->route('tags.index');
     }
 
@@ -90,8 +93,10 @@ class TagController extends Controller
         $data = $request->all();
         $isUpdated = $tag->update($data);
         if (!$isUpdated) {
-            return "Erro ao atualizar tag no banco de dados";
+            notify()->error("Por favor, tente mais tarde novamente", "Erro ao atualizar tag no banco de dados");
+            return redirect()->route('tags.edit', ['tag' => $id]);
         }
+        notify()->success("Tag atualizada com sucesso!", "Deu tudo certo");
         return redirect()->route('tags.index');
     }
 
@@ -112,9 +117,23 @@ class TagController extends Controller
         */
 
         DB::table('product_tag')->where('tag_id', $tag->id)->delete();
-        $tag->delete();
-
+        $isDestroyed = $tag->delete();
+        if ($isDestroyed) {
+            notify()->success("Tag deletada com sucesso", "Tudo ok");
+        } else {
+            notify()->error("Tente novamente mais tarde", "Erro ao deletar tag");
+        }
         // Depois adicionar a mensagem de sucesso ou erro
         return redirect()->route('tags.index');
+    }
+
+    private function callRightFunction(Exception $e)
+    {
+        $title = "Erro ao salvar no banco de dados";
+        if ($e->getCode() == 23000) {
+            notify()->error("Já existe uma tag com o nome que você tentou usar!", $title);
+        } else {
+            notify()->error("Por favor, tente mais tarde novamente", $title);
+        }
     }
 }
