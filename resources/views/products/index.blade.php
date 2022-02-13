@@ -4,12 +4,12 @@
     <div class="container">
         <h2>Listagem de produtos</h2>
         <a href="{{route('produtos.create')}}" class="btn btn-success">Adicionar produto</a>
-        <table class="table">
+        <table class="table table-bordered mt-4">
             <thead>
                 <tr>
-                    <th>Nome do produto</th>
-                    <th>Tags</th>
-                    <th>Ações</th>
+                    <th scope="col" class="col-8">Nome do produto</th>
+                    <th scope="col" class="col-2">Tags</th>
+                    <th scope="col" class="col-2">Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -17,8 +17,8 @@
                     <tr>
                         <td>{{$product->name}}</td>
                         <td> 
-                            <button type="button" class="btn btn-info " data-bs-toggle="modal" data-bs-target="#tag-{{$product->id}}">
-                                Ver as tags deste produto
+                            <button type="button" class="btn btn-outline-info btn-sm " data-bs-toggle="modal" data-bs-target="#tag-{{$product->id}}">
+                                Tags
                             </button>
                             <div class="modal fade" id="tag-{{$product->id}}" tabindex="-1" aria-labelledby="tag-{{$product->id}}Label" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -40,13 +40,9 @@
                               </div>
                         </td>
                         <td>
-                            <div class="btn-group">
-                                <a class="btn btn-warning" href="{{route('produtos.edit', ['produto' => $product->id])}}">Editar</a>
-                            <form action="{{route('produtos.destroy', ['produto' => $product->id])}}" method='post'>
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Deletar</button>
-                            </form>
+                            <div class="btn-group flex-wrap">
+                                <a class="btn btn-outline-primary btn-sm" href="{{route('produtos.edit', ['produto' => $product->id])}}">Editar</a>
+                                <x-delete-item :item="$product" :route="route('produtos.destroy', ['produto' => $product->id])"/>
                             </div>
                         </td>
                     </tr>

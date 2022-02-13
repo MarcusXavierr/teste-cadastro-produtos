@@ -4,25 +4,23 @@
     <div class="container">
         <h2>Listagem de Tags disponiveis</h2>
         <a class="btn btn-success" href="{{route('tags.create')}}">Adicionar Tag</a>
-        <table class="table">
+        <table class="table table-bordered mt-4">
             <thead>
                 <tr>
-                    <th>Nome da tag</th>
-                    <th>Editar</th>
-                    <th>Deletar</th>
+                    <th class="col-10">Nome da tag</th>
+                    <th class="col-2">Ações</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($tags as $tag)
                     <tr>
                         <td>{{$tag->name}}</td>
-                        <td> <a class="btn btn-warning" href="{{route('tags.edit', ['tag' => $tag->id])}}">Editar</a> </td>
                         <td>
-                            <form action="{{route('tags.destroy', ['tag' => $tag->id])}}" method='post'>
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Deletar</button>
-                            </form>
+                            <div class="btn-group">
+                                <a class="btn btn-outline-primary btn-sm" href="{{route('tags.edit', ['tag' => $tag->id])}}">Editar</a> 
+                                <x-delete-item :item="$tag" :route="route('tags.destroy', ['tag' => $tag->id])"/>
+                            </div>
+                            
                         </td>
                     </tr>
                 @endforeach
