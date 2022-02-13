@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tag;
+use Illuminate\Support\Facades\DB;
 
 class TagController extends Controller
 {
@@ -103,6 +104,14 @@ class TagController extends Controller
     public function destroy($id)
     {
         $tag = Tag::findOrFail($id);
+
+        /*
+        Como eu não quero alterar as minhas migrations
+        porque isso deixaria o schema do meu banco de dados diferente do schema do teste
+        eu vou fazer a lógica de deletar em cascata aqui mesmo
+        */
+
+        DB::table('product_tag')->where('tag_id', $tag->id)->delete();
         $tag->delete();
 
         // Depois adicionar a mensagem de sucesso ou erro
