@@ -31,8 +31,8 @@
             </div>
 
                
+            <button type="submit" class="btn btn-success mt-4 px-5">Editar</button>
             
-            <button type="submit" class="btn btn-success">Editar</button>
         </form>
     </div>
 @endsection
