@@ -16,7 +16,29 @@
                 @foreach ($products as $product)
                     <tr>
                         <td>{{$product->name}}</td>
-                        <td> KEK </td>
+                        <td> 
+                            <button type="button" class="btn btn-info " data-bs-toggle="modal" data-bs-target="#tagModal">
+                                Ver as tags deste produto
+                            </button>
+                            <div class="modal fade" id="tagModal" tabindex="-1" aria-labelledby="tagModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="tagModalLabel">Tags deste produto</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      @foreach ($product->tags as $tag)
+                                          {{$tag->name}}<br>
+                                      @endforeach
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                        </td>
                         <td>
                             <div class="btn-group">
                                 <a class="btn btn-warning" href="{{route('produtos.edit', ['produto' => $product->id])}}">Editar</a>
@@ -31,5 +53,6 @@
                 @endforeach
             </tbody>
         </table>
+        {{$products->links()}}
     </div>
 @endsection
