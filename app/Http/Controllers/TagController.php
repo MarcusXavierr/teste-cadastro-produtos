@@ -50,7 +50,7 @@ class TagController extends Controller
         try {
             $tag->create($data);
         } catch (Exception $e) {
-            $this->callRightFunction($e);
+            $this->returnErrorMessage($e);
             return redirect()->route('tags.create');
         }
         notify()->success("Tag criada com sucesso", "Tudo ok");
@@ -127,7 +127,7 @@ class TagController extends Controller
         return redirect()->route('tags.index');
     }
 
-    private function callRightFunction(Exception $e)
+    private function returnErrorMessage(Exception $e)
     {
         $title = "Erro ao salvar no banco de dados";
         if ($e->getCode() == 23000) {

@@ -56,12 +56,7 @@ class ProductController extends Controller
             $productInstance = $product->create($data);
             $productInstance->tags()->sync($tags);
         } catch (Exception $e) {
-            $title = "Erro ao adicionar produto no banco de dados";
-            if ($e->getCode() == 23000) {
-                notify()->error("Você não pode ter nomes duplicados", $title);
-            } else {
-                notify()->error("Erro desconhecido no banco de dados, por favor tente novamente mais tarde", $title);
-            }
+            $this->returnErrorMessage($e);
             return redirect()->route('produtos.create');
         }
         notify()->success("Produto adicionado com sucesso!", "Deu tudo certo");
@@ -138,5 +133,15 @@ class ProductController extends Controller
         }
         // Depois adicionar a mensagem de sucesso ou erro
         return redirect()->route('produtos.index');
+    }
+
+    private function returnErrorMessage(Exception $e)
+    {
+        $title = "Erro ao salvar no banco de dados";
+        if ($e->getCode() == 23000) {
+            notify()->error("Já existe um produto com o nome que você tentou usar!", $title);
+        } else {
+            notify()->error("Erro desconhecido no banco de dados, por favor tente novamente mais tarde", $title);
+        }
     }
 }
