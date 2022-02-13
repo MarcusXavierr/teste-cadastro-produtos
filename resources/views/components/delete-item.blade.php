@@ -1,5 +1,5 @@
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#item-{{$item->id}}">
+<button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#item-{{$item->id}}">
     <i class="fa-solid fa-trash-can"></i>
 </button>
 
