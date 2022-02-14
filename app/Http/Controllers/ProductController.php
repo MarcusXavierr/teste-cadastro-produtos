@@ -156,19 +156,20 @@ class ProductController extends Controller
 
         $data = $request->all();
         $products = $this->fetchProductsFromDB($data);
+        notify()->success('Pesquisa feita com sucesso', 'Tudo ok');
         return view('products.search', compact('tags', 'products'));
     }
 
     private function fetchProductsFromDB($data)
     {
 
-        $partialQuery = Product::where('name', 'like', "%{$data['name']}%")
-            ->join('product_tag', 'product.id', '=', 'product_tag.product_id');
+        $partialQuery = Product::where('name', 'like', "%{$data['name']}%");
 
         if (!isset($data['tags'])) {
             $products = $partialQuery->get();
         } else {
-            $products = $partialQuery->whereIn('tag_id', $data['tags'])->get();
+            $products = $partialQuery->join('product_tag', 'product.id', '=', 'product_tag.product_id')
+                ->whereIn('tag_id', $data['tags'])->get();
         }
 
         return $products;
