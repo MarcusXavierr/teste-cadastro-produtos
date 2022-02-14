@@ -19,14 +19,13 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         // Perdoe esse codigo bagunçado, é só pra testar mesmo
         try {
-            Tag::factory(20)->create();
+            Tag::factory(10)->create();
         } catch (Exception $e) {
         }
         try {
-            for ($i = 0; $i < 100; $i++) {
-                $products = Product::factory()->create();
-                $products->tags()->sync(random_int(1, 15));
-            }
+            Product::factory(100)->create()->each(function ($product) {
+                $product->tags()->sync(random_int(1, 8));
+            });
         } catch (Exception $e) {
         }
     }
