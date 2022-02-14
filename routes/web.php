@@ -25,4 +25,4 @@ Route::resource("produtos", '\App\Http\Controllers\ProductController');
 Route::resource("tags", "\App\Http\Controllers\TagController");
 
 Route::match(['GET', 'POST'], '/pesquisar', '\App\Http\Controllers\ProductController@search')->name('produtos.search');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
