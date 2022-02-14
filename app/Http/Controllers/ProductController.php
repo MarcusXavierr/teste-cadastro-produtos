@@ -16,7 +16,7 @@ class ProductController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth')->except('index');
+        $this->middleware('auth')->except(['index', 'search']);
     }
     /**
      * Display a listing of the resource.
@@ -145,5 +145,32 @@ class ProductController extends Controller
         } else {
             notify()->error("Erro desconhecido no banco de dados, por favor tente novamente mais tarde", $title);
         }
+    }
+
+    public function search(Request $request)
+    {
+        $tags = Tag::all();
+        if ($request->isMethod('GET')) {
+            return view('products.search', compact('tags'));
+        }
+
+        $data = $request->all();
+        $products = $this->fetchProductsFromDB($data);
+        return view('products.search', compact('tags', 'products'));
+    }
+
+    private function fetchProductsFromDB($data)
+    {
+
+        $partialQuery = Product::where('name', 'like', "%{$data['name']}%")
+            ->join('product_tag', 'product.id', '=', 'product_tag.product_id');
+
+        if (!isset($data['tags'])) {
+            $products = $partialQuery->get();
+        } else {
+            $products = $partialQuery->whereIn('tag_id', $data['tags'])->get();
+        }
+
+        return $products;
     }
 }
