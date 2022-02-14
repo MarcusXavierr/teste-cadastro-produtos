@@ -48,6 +48,9 @@
                         <li class="nav-item">
                             <a href="{{route('tags.index')}}" class="nav-link">Tags</a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{route('produtos.search')}}" class="nav-link">Pesquisar produtos</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -95,5 +98,6 @@
         </main>
     </div>
     @notifyJs
+    @yield('js-script')
 </body>
 </html>
