@@ -14,7 +14,7 @@ class TagFactory extends Factory
     public function definition()
     {
         $this->faker->addProvider(new \Bezhanov\Faker\Provider\Commerce($this->faker));
-        $suffix = rand(0, 1) ? " - x" : "";
+        $suffix = rand(0, 1) ? "_" : "";
         return [
             'name' => "{$this->faker->unique()->department}$suffix"
 
