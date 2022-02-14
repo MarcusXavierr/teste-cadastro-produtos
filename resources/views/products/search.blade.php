@@ -7,8 +7,8 @@
             @csrf
 
             <div>
-                <label for="productName" class="form-label">Nome do produto</label>
-                <input type="text" name="name" class="form-control">
+                {{-- <label for="productName" class="form-label">Nome do produto</label> --}}
+                <input type="text" name="name" class="form-control" id="userInput" placeholder="digite o nome do produto">
                 @if ($errors->has('name'))
                     <span class="help-block text-sm text-danger ">
                         {{ $errors->first('name') }}
@@ -28,7 +28,7 @@
                 <p>Caso você não deseje filtrar os produtos por tag, basta não selecionar nenhuma</p>
             </div>
 
-            <button class="btn btn-success mt-3">Pesquisar</button>
+            <button id="btn" class="btn btn-success mt-3">Pesquisar</button>
         </form>
 
 
@@ -76,4 +76,19 @@
 
         @endif
     </div>
+@endsection
+
+@section('js-script')
+    <script>
+        document.getElementById('btn').disabled = true; 
+        document.getElementById('userInput').addEventListener('keyup', e => {
+        //Check for the input's value
+        if (e.target.value == "") {
+            document.getElementById('btn').disabled = true;
+        }
+        else {
+            document.getElementById('btn').disabled = false;
+        }
+        });
+    </script>
 @endsection
