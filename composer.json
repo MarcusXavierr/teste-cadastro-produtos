@@ -12,6 +12,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
+        "mbezhanov/faker-provider-collection": "^2.0",
         "mckenziearts/laravel-notify": "^2.2"
     },
     "require-dev": {
