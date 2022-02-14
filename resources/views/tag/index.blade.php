@@ -9,7 +9,8 @@
         <table class="table table-bordered mt-4">
             <thead>
                 <tr>
-                    <th class="col-10">Nome da tag</th>
+                    <th class="col-8">Nome da tag</th>
+                    <th class="col-2">Qtd produtos</th>
                     @auth <th class="col-2">Ações</th> @endauth
                 </tr>
             </thead>
@@ -17,6 +18,7 @@
                 @foreach ($tags as $tag)
                     <tr>
                         <td>{{$tag->name}}</td>
+                        <td>{{count($tag->products)}}</td>
                         @auth
                         <td>
                             <div class="btn-group">
