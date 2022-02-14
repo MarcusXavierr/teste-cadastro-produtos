@@ -38,8 +38,9 @@
         <table class="table table-bordered mt-4">
             <thead>
                 <tr>
-                    <th scope="col" class="col-10">Nome do produto</th>
+                    <th scope="col" class="col-8">Nome do produto</th>
                     <th scope="col" class="col-2">Tags</th>
+                    @auth  <th scope="col" class="col-2">Ações</th> @endauth
                 </tr>
             </thead>
             <tbody>
@@ -69,6 +70,14 @@
                                 </div>
                               </div>
                         </td>
+                        @auth
+                        <td>
+                            <div class="btn-group flex-wrap">
+                                <a class="btn btn-outline-primary btn-sm" href="{{route('produtos.edit', ['produto' => $product->id])}}">Editar</a>
+                                <x-delete-item :item="$product" :route="route('produtos.destroy', ['produto' => $product->id])"/>
+                            </div>
+                        </td>
+                    @endauth
                     </tr>
                 @endforeach
             </tbody>
