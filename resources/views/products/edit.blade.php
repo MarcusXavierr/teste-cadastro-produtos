@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        <a href="{{route('produtos.index')}}" class="link"><i class="fa-solid fa-angle-left"></i> Voltar</a>
         <h2>Editar produto</h2>
         <form action="{{route('produtos.update', ['produto' => $product->id])}}" method="post">
             @csrf

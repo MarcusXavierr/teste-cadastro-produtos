@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        <a href="{{route('produtos.index')}}" class="link"><i class="fa-solid fa-angle-left"></i> Voltar</a>
         <h2>Criar novo produto</h2>
         <form action="{{route('produtos.store')}}" method="post">
             @csrf

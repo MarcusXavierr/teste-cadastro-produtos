@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        <a href="{{route('tags.index')}}" class="link"><i class="fa-solid fa-angle-left"></i> Voltar</a>
         <h2>Adicionar nova tag</h2>
         <form action="{{route('tags.store')}}" method="post">
             @csrf
