@@ -15,8 +15,8 @@ services:
     volumes:
       - ./docker-compose/mysql:/var/lib/mysql
       # tem um problema aqui, o mysql não cria os arquivos como se meu usuario fosse o owner
-      # por isso quando eu dou restart pelo vs code dá um problema que é resolvido, ou quando eu rodo
-      # chown -R 755 docker-compose/mysql pra colocar meu usuario como owner, ou quando removo a pasta
+      # por isso quando eu dou restart pelo vs code dá um problema de acesso negado que é resolvido, ou quando eu rodo
+      # chown -R 755 docker-compose/mysql pra permitir meu usuario de mexer na pasta, ou quando removo a pasta
     networks:
       - application
 
