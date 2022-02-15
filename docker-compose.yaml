@@ -1,9 +1,9 @@
 version: '3.7'
 services:
   # Banco de dados
-  db:
+  db_promobit_teste:
     image: mysql:5.7
-    container_name: db
+    container_name: db_promobit_teste
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
@@ -14,6 +14,9 @@ services:
       SERVICE_NAME: mysql
     volumes:
       - ./docker-compose/mysql:/var/lib/mysql
+      # tem um problema aqui, o mysql não cria os arquivos como se meu usuario fosse o owner
+      # por isso quando eu dou restart pelo vs code dá um problema que é resolvido, ou quando eu rodo
+      # chown -R 755 docker-compose/mysql pra colocar meu usuario como owner, ou quando removo a pasta
     networks:
       - application
   phpmyadmin:
@@ -22,21 +25,21 @@ services:
     ports:
       - "8080:80"
     links:
-      - "db:db"
+      - "db_promobit_teste:db_promobit_teste"
     networks:
       - application
 
   app:
     build:
       args:
-        user: marcus
-        uid: 1000
+        user: ${USER}
+        uid: ${UID}
       context: ./
       dockerfile: Dockerfile
     image: ${APP_NAME}
     container_name: app
     depends_on:
-      - db
+      - db_promobit_teste
     restart: unless-stopped
     expose:
       - 80
