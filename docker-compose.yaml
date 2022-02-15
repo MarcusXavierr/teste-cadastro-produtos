@@ -19,13 +19,18 @@ services:
       # chown -R 755 docker-compose/mysql pra colocar meu usuario como owner, ou quando removo a pasta
     networks:
       - application
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
+    environment:
+      PMA_HOST: db_promobit_teste
+    depends_on:
+      - db_promobit_teste
     ports:
       - "8080:80"
     links:
-      - "db_promobit_teste:db_promobit_teste"
+      - db_promobit_teste
     networks:
       - application
 
